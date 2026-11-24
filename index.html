@@ -1,402 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer Issue Tracker</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#1e293b" />
-  <style>
-    :root {
-      --bg: #f1f5f9;
-      --card: #ffffff;
-      --primary: #1e293b;
-      --accent: #2563eb;
-      --border: #cbd5e1;
-      --text: #0f172a;
-      --muted: #64748b;
-    }
-    * { box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 16px;
-      padding-bottom: 40px;
-    }
-    .container {
-      max-width: 640px;
-      margin: 0 auto;
-    }
-    header {
-      background: var(--primary);
-      color: #fff;
-      padding: 16px;
-      border-radius: 10px;
-      margin-bottom: 16px;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.25rem;
-    }
-    .card {
-      background: var(--card);
-      padding: 16px;
-      border-radius: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-      margin-bottom: 16px;
-    }
-    .field {
-      margin-bottom: 12px;
-    }
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--primary);
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 16px;
-      font-family: inherit;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 75px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-    .btn-cancel {
-      background: #e2e8f0;
-      color: var(--primary);
-      margin-top: 8px;
-      display: none;
-    }
-    .btn-secondary {
-      background: #e2e8f0;
-      color: var(--primary);
-      width: auto;
-      padding: 8px 12px;
-      font-size: 0.85rem;
-    }
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .toolbar input {
-      flex: 1;
-    }
-    .issue-item {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 10px;
-      background: #fff;
-    }
-    .issue-item.resolved {
-      opacity: 0.65;
-      background: #f8fafc;
-    }
-    .issue-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .issue-name {
-      font-weight: 700;
-      font-size: 1.05rem;
-    }
-    .issue-meta {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-    .issue-desc {
-      background: #f8fafc;
-      padding: 8px;
-      border-radius: 6px;
-      font-size: 0.92rem;
-      margin-bottom: 10px;
-      white-space: pre-wrap;
-    }
-    .issue-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-small {
-      padding: 6px 10px;
-      font-size: 0.8rem;
-      width: auto;
-    }
-    .btn-done { background: #dcfce7; color: #166534; }
-    .btn-edit { background: #e0f2fe; color: #075985; }
-    .btn-del { background: #fee2e2; color: #991b1b; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Relations</title>
+    <!-- Link to your manifest file -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .profile-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+        }
+        .profile-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box; /* Important for padding */
+        }
+        .saved-results {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+        }
+        .result-title {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .result-content {
+            font-size: 16px;
+            white-space: pre-wrap; /* Preserves line breaks */
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Customer Issue Log</h1>
-    </header>
 
-    <div class="card">
-      <form id="issueForm">
-        <input type="hidden" id="editId" value="" />
+<header>
+    Customer Issue Log
+</header>
 
-        <div class="field">
-          <label for="name">Customer Name *</label>
-          <input type="text" id="name" required placeholder="Jane Doe" />
-        </div>
-
-        <div class="field">
-          <label for="phone">Phone Number *</label>
-          <input type="tel" id="phone" required placeholder="(555) 123-4567" />
-        </div>
-
-        <div class="field">
-          <label for="address">Address</label>
-          <input type="text" id="address" placeholder="123 Main St, City, ST" />
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="model">Model #</label>
-            <input type="text" id="model" placeholder="Model number" />
-          </div>
-          <div class="field">
-            <label for="serial">Serial #</label>
-            <input type="text" id="serial" placeholder="Serial number" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="dateDelivered">Date Delivered</label>
-            <input type="date" id="dateDelivered" />
-          </div>
-          <div class="field">
-            <label for="dateCalled">Date Called</label>
-            <input type="date" id="dateCalled" />
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="issue">Issue Description *</label>
-          <textarea id="issue" required placeholder="Describe the problem..."></textarea>
-        </div>
-
-        <button type="submit" class="btn-primary" id="submitBtn">Save Customer Issue</button>
-        <button type="button" class="btn-cancel" id="cancelEditBtn">Cancel Edit</button>
-      </form>
+<div class="content">
+    <!-- Profile Card -->
+    <div class="profile-card">
+        <img src="image_1.png" alt="ABC Relations Icon" class="profile-icon">
+        <span class="profile-name">Jane Doe</span>
     </div>
 
-    <div class="card">
-      <div class="toolbar">
-        <input type="search" id="searchInput" placeholder="Search by name or phone..." />
-        <button type="button" class="btn-secondary" id="exportBtn">Export CSV</button>
-      </div>
-      <div id="issueList"></div>
+    <!-- Search Input (Data is saved here) -->
+    <input type="text" id="searchInput" class="search-box" placeholder="Search by name... (data saves automatically)">
+
+    <!-- Area to display the saved data -->
+    <div class="saved-results">
+        <div class="result-title">Log Entry for Jane Doe:</div>
+        <div id="savedContent" class="result-content"></div>
     </div>
-  </div>
+</div>
 
-  <script>
-    const STORAGE_KEY = "customer_issues_v1";
-    let issues = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+<script>
+    // 1. Find the elements we need
+    const searchInput = document.getElementById('searchInput');
+    const savedContent = document.getElementById('savedContent');
 
-    // Set default "Date Called" to today
-    document.getElementById("dateCalled").valueAsDate = new Date();
+    // 2. Define a unique key for this specific data
+    const STORAGE_KEY = 'abc_relations_jane_doe_log';
 
-    function saveToStorage() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(issues));
-      renderIssues();
-    }
+    // 3. LOAD DATA: When the app opens, check if data exists and put it on the screen
+    window.addEventListener('load', () => {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (savedData) {
+            searchInput.value = savedData; // Put text in input box
+            savedContent.textContent = savedData; // Display text below
+        }
+    });
 
-    function resetForm() {
-      document.getElementById("issueForm").reset();
-      document.getElementById("editId").value = "";
-      document.getElementById("submitBtn").textContent = "Save Customer Issue";
-      document.getElementById("cancelEditBtn").style.display = "none";
-      document.getElementById("dateCalled").valueAsDate = new Date();
-    }
+    // 4. SAVE DATA: Every time the user types a letter, save the entire input instantly
+    searchInput.addEventListener('input', () => {
+        const dataToSave = searchInput.value;
+        localStorage.setItem(STORAGE_KEY, dataToSave); // Save to phone's memory
+        savedContent.textContent = dataToSave; // Update the display below immediately
+    });
 
-    document.getElementById("cancelEditBtn").addEventListener("click", resetForm);
-
-    document.getElementById("issueForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const editId = document.getElementById("editId").value;
-
-      const entryData = {
-        name: document.getElementById("name").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        address: document.getElementById("address").value.trim(),
-        model: document.getElementById("model").value.trim(),
-        serial: document.getElementById("serial").value.trim(),
-        dateDelivered: document.getElementById("dateDelivered").value,
-        dateCalled: document.getElementById("dateCalled").value,
-        issue: document.getElementById("issue").value.trim()
-      };
-
-      if (editId) {
-        issues = issues.map(item =>
-          item.id === Number(editId) ? { ...item, ...entryData } : item
-        );
-      } else {
-        issues.unshift({
-          id: Date.now(),
-          ...entryData,
-          resolved: false
+    // Register the Service Worker (Required for PWA installation)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then(registration => {
+                console.log('ServiceWorker registration successful');
+            }, err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
         });
-      }
-
-      saveToStorage();
-      resetForm();
-    });
-
-    function editIssue(id) {
-      const item = issues.find(i => i.id === id);
-      if (!item) return;
-
-      document.getElementById("editId").value = item.id;
-      document.getElementById("name").value = item.name || "";
-      document.getElementById("phone").value = item.phone || "";
-      document.getElementById("address").value = item.address || "";
-      document.getElementById("model").value = item.model || "";
-      document.getElementById("serial").value = item.serial || "";
-      document.getElementById("dateDelivered").value = item.dateDelivered || "";
-      document.getElementById("dateCalled").value = item.dateCalled || "";
-      document.getElementById("issue").value = item.issue || "";
-
-      document.getElementById("submitBtn").textContent = "Update Customer Issue";
-      document.getElementById("cancelEditBtn").style.display = "block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+</script>
 
-    function toggleResolved(id) {
-      issues = issues.map(item =>
-        item.id === id ? { ...item, resolved: !item.resolved } : item
-      );
-      saveToStorage();
-    }
-
-    function deleteIssue(id) {
-      if (!confirm("Delete this entry?")) return;
-      issues = issues.filter(item => item.id !== id);
-      saveToStorage();
-    }
-
-    function renderIssues() {
-      const rawQuery = document.getElementById("searchInput").value.trim().toLowerCase();
-      const digitsQuery = rawQuery.replace(/\D/g, "");
-      const list = document.getElementById("issueList");
-
-      const filtered = issues.filter(item => {
-        if (!rawQuery) return true;
-
-        const nameMatch = (item.name || "").toLowerCase().includes(rawQuery);
-        const rawPhone = (item.phone || "").toLowerCase();
-        const digitsPhone = rawPhone.replace(/\D/g, "");
-
-        const phoneMatch =
-          rawPhone.includes(rawQuery) ||
-          (digitsQuery.length > 0 && digitsPhone.includes(digitsQuery));
-
-        return nameMatch || phoneMatch;
-      });
-
-      if (filtered.length === 0) {
-        list.innerHTML = `<p style="color:#64748b; text-align:center;">No matching customer issues found.</p>`;
-        return;
-      }
-
-      list.innerHTML = filtered.map(item => `
-        <div class="issue-item ${item.resolved ? "resolved" : ""}">
-          <div class="issue-header">
-            <span class="issue-name">${escapeHtml(item.name)}</span>
-            <a href="tel:${escapeHtml(item.phone)}" style="font-size:0.9rem; color:#2563eb; text-decoration:none;">
-              ${escapeHtml(item.phone)}
-            </a>
-          </div>
-          <div class="issue-meta">
-            ${item.address ? `<div><strong>Address:</strong> ${escapeHtml(item.address)}</div>` : ""}
-            <div>
-              <strong>Model:</strong> ${escapeHtml(item.model || "—")} |
-              <strong>Serial:</strong> ${escapeHtml(item.serial || "—")}
-            </div>
-            <div>
-              <strong>Delivered:</strong> ${item.dateDelivered || "—"} |
-              <strong>Called:</strong> ${item.dateCalled || "—"}
-            </div>
-          </div>
-          <div class="issue-desc">${escapeHtml(item.issue)}</div>
-          <div class="issue-actions">
-            <button class="btn-small btn-done" onclick="toggleResolved(${item.id})">
-              ${item.resolved ? "Reopen" : "Mark Resolved"}
-            </button>
-            <button class="btn-small btn-edit" onclick="editIssue(${item.id})">Edit</button>
-            <button class="btn-small btn-del" onclick="deleteIssue(${item.id})">Delete</button>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    document.getElementById("searchInput").addEventListener("input", renderIssues);
-
-    document.getElementById("exportBtn").addEventListener("click", () => {
-      if (issues.length === 0) return alert("No records to export.");
-      const headers = ["Name", "Phone", "Address", "Model", "Serial", "Date Delivered", "Date Called", "Issue", "Status"];
-      const rows = issues.map(i => [
-        i.name, i.phone, i.address, i.model, i.serial,
-        i.dateDelivered, i.dateCalled, i.issue, i.resolved ? "Resolved" : "Open"
-      ].map(v => `"${String(v || "").replace(/"/g, '""')}"`).join(","));
-
-      const csv = [headers.join(","), ...rows].join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `customer-issues-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
-    }
-
-    renderIssues();
-  </script>
 </body>
-  </html>
-  
+</html>

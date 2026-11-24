@@ -1,10 +1,10 @@
 {
-  "name": "Customer Issue Tracker",
-  "short_name": "Issue Log",
-  "start_url": "./",
+  "name": "ABC Relations Issue Log",
+  "short_name": "ABC Log",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f1f5f9",
-  "theme_color": "#1e293b",
+  "background_color": "#ffffff",
+  "theme_color": "#003366",
   "icons": [
     {
       "src": "icon-192.png",

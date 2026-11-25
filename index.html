@@ -1,139 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABC Relations</title>
-    <!-- Link to your manifest file -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#003366">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        header {
-            background-color: #003366;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .content {
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .profile-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .profile-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 5px;
-        }
-        .profile-name {
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .search-box {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box; /* Important for padding */
-        }
-        .saved-results {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            min-height: 100px;
-        }
-        .result-title {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 5px;
-        }
-        .result-content {
-            font-size: 16px;
-            white-space: pre-wrap; /* Preserves line breaks */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Relations Manager</title>
+  <style>
+    :root { --primary: #0f172a; --accent: #2563eb; --bg: #f1f5f9; --card: #ffffff; --border: #cbd5e1; }
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { margin: 0; background: var(--bg); color: #1e293b; padding-bottom: 84px; }
+    header { background: var(--primary); color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
+    header h1 { margin: 0 0 10px; font-size: 18px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .top-actions { display: flex; gap: 6px; }
+    .top-actions button { background: #334155; color: #fff; padding: 6px 10px; font-size: 12px; border-radius: 6px; }
+    .search-bar { width: 100%; padding: 10px 12px; border-radius: 8px; border: none; font-size: 15px; }
+    .container { max-width: 720px; margin: 14px auto; padding: 0 12px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .cust-name { font-weight: 700; font-size: 17px; }
+    .meta { font-size: 13px; color: #475569; margin: 8px 0; line-height: 1.5; }
+    .notes-box { background: #fefce8; border-left: 3px solid #eab308; padding: 8px 10px; font-size: 14px; margin: 8px 0; white-space: pre-wrap; border-radius: 4px; }
+    .card-actions { display: flex; gap: 8px; margin-top: 10px; }
+    button { border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600; font-size: 14px; cursor: pointer; }
+    .btn-edit { background: #e2e8f0; color: #0f172a; flex: 1; }
+    .btn-del { background: #fee2e2; color: #b91c1c; padding: 9px 12px; }
+    .fab { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #fff; width: 56px; height: 56px; border-radius: 50%; font-size: 28px; box-shadow: 0 4px 12px rgba(37,99,235,0.4); display: flex; align-items: center; justify-content: center; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 20; overflow-y: auto; padding: 16px; }
+    .modal.open { display: block; }
+    .modal-content { background: #fff; max-width: 540px; margin: 0 auto; border-radius: 12px; padding: 18px; }
+    .modal-content h2 { margin-top: 0; font-size: 18px; }
+    label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin: 10px 0 4px; text-transform: uppercase; }
+    input, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .modal-footer { display: flex; gap: 10px; margin-top: 16px; }
+    .btn-save { background: var(--accent); color: #fff; flex: 2; padding: 12px; }
+    .btn-cancel { background: #e2e8f0; color: #0f172a; flex: 1; padding: 12px; }
+    .status-msg { text-align: center; padding: 28px; color: #64748b; }
+  </style>
 </head>
 <body>
 
 <header>
-    Customer Issue Log
+  <h1>
+    <span>Customer Relations (<span id="totalCount">0</span>)</span>
+    <div class="top-actions">
+      <button onclick="loadData()">Sync</button>
+      <button onclick="setTokenPrompt()">Token</button>
+    </div>
+  </h1>
+  <input type="search" id="searchInput" class="search-bar" placeholder="Search first/last name, model, serial, dates, notes..." oninput="render()" />
 </header>
 
-<div class="content">
-    <!-- Profile Card -->
-    <div class="profile-card">
-        <img src="image_1.png" alt="ABC Relations Icon" class="profile-icon">
-        <span class="profile-name">Jane Doe</span>
+<div class="container" id="listContainer">
+  <div class="status-msg">Loading...</div>
+</div>
+
+<button class="fab" onclick="openForm()">+</button>
+
+<div class="modal" id="formModal">
+  <div class="modal-content">
+    <h2 id="modalTitle">New Customer</h2>
+    <input type="hidden" id="f-ID" />
+
+    <div class="row-2">
+      <div>
+        <label>First Name</label>
+        <input type="text" id="f-FirstName" />
+      </div>
+      <div>
+        <label>Last Name</label>
+        <input type="text" id="f-LastName" />
+      </div>
     </div>
 
-    <!-- Search Input (Data is saved here) -->
-    <input type="text" id="searchInput" class="search-box" placeholder="Search by name... (data saves automatically)">
-
-    <!-- Area to display the saved data -->
-    <div class="saved-results">
-        <div class="result-title">Log Entry for Jane Doe:</div>
-        <div id="savedContent" class="result-content"></div>
+    <div class="row-2">
+      <div>
+        <label>Model</label>
+        <input type="text" id="f-Model" />
+      </div>
+      <div>
+        <label>Serial</label>
+        <input type="text" id="f-Serial" />
+      </div>
     </div>
+
+    <div class="row-2">
+      <div>
+        <label>Date Delivered</label>
+        <input type="date" id="f-DateDelivered" />
+      </div>
+      <div>
+        <label>Date Called</label>
+        <input type="date" id="f-DateCalled" />
+      </div>
+    </div>
+
+    <label>Notes</label>
+    <textarea id="f-Notes" rows="4"></textarea>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeForm()">Cancel</button>
+      <button class="btn-save" id="saveBtn" onclick="saveRecord()">Save</button>
+    </div>
+  </div>
 </div>
 
 <script>
-    // 1. Find the elements we need
-    const searchInput = document.getElementById('searchInput');
-    const savedContent = document.getElementById('savedContent');
+  const GH_OWNER = "YOUR_GITHUB_USERNAME";
+  const GH_REPO = "customer-relations";
+  const GH_PATH = "data.json";
+  const TOKEN_KEY = "crm_gh_token_v1";
 
-    // 2. Define a unique key for this specific data
-    const STORAGE_KEY = 'abc_relations_jane_doe_log';
+  let records = [];
+  let fileSha = null;
 
-    // 3. LOAD DATA: When the app opens, check if data exists and put it on the screen
-    window.addEventListener('load', () => {
-        const savedData = localStorage.getItem(STORAGE_KEY);
-        if (savedData) {
-            searchInput.value = savedData; // Put text in input box
-            savedContent.textContent = savedData; // Display text below
-        }
-    });
-
-    // 4. SAVE DATA: Every time the user types a letter, save the entire input instantly
-    searchInput.addEventListener('input', () => {
-        const dataToSave = searchInput.value;
-        localStorage.setItem(STORAGE_KEY, dataToSave); // Save to phone's memory
-        savedContent.textContent = dataToSave; // Update the display below immediately
-    });
-
-    // Register the Service Worker (Required for PWA installation)
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').then(registration => {
-                console.log('ServiceWorker registration successful');
-            }, err => {
-                console.log('ServiceWorker registration failed: ', err);
-            });
-        });
+  function getToken() {
+    let t = localStorage.getItem(TOKEN_KEY);
+    if (!t) {
+      t = prompt("Enter your GitHub Personal Access Token (saved locally on this device):");
+      if (t && t.trim()) {
+        localStorage.setItem(TOKEN_KEY, t.trim());
+        return t.trim();
+      }
     }
-</script>
+    return t ? t.trim() : "";
+  }
 
+  function setTokenPrompt() {
+    const current = localStorage.getItem(TOKEN_KEY) || "";
+    const next = prompt("Update GitHub Personal Access Token (leave blank to clear):", current);
+    if (next === null) return;
+    if (next.trim()) {
+      localStorage.setItem(TOKEN_KEY, next.trim());
+      loadData();
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+      alert("Token cleared on this device.");
+    }
+  }
+
+  function apiUrl() {
+    return `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+  }
+
+  function encodeBase64Utf8(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = "";
+    bytes.forEach(b => bin += String.fromCharCode(b));
+    return btoa(bin);
+  }
+
+  function decodeBase64Utf8(b64) {
+    const clean = b64.replace(/\n/g, "");
+    const bin = atob(clean);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  async function loadData() {
+    const token = getToken();
+    const container = document.getElementById("listContainer");
+    container.innerHTML = '<div class="status-msg">Syncing with GitHub...</div>';
+
+    if (!token) {
+      container.innerHTML = '<div class="status-msg">Tap <strong>Token</strong> in the top bar to connect your repository.</div>';
+      return;
+    }
+
+    try {
+      const res = await fetch(apiUrl(), {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Accept": "application/vnd.github+json"
+        }
+      });
+
+      if (res.status === 404) {
+        records = [];
+        fileSha = null;
+        render();
+        return;
+      }
+
+      if (!res.ok) throw new Error(`GitHub error (${res.status})`);
+
+      const json = await res.json();
+      fileSha = json.sha;
+      records = JSON.parse(decodeBase64Utf8(json.content || ""));
+      if (!Array.isArray(records)) records = [];
+      render();
+    } catch (err) {
+      container.innerHTML = `<div class="status-msg">Sync failed: ${err.message}</div>`;
+    }
+  }
+
+  async function saveToGitHub(msg) {
+    const token = getToken();
+    if (!token) throw new Error("Missing token");
+
+    const body = {
+      message: msg,
+      content: encodeBase64Utf8(JSON.stringify(records, null, 2))
+    };
+    if (fileSha) body.sha = fileSha;
+
+    const res = await fetch(apiUrl(), {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Accept": "application/vnd.github+json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.message || `Save failed (${res.status})`);
+    }
+
+    const updated = await res.json();
+    fileSha = updated.content.sha;
+  }
+
+  function render() {
+    const q = document.getElementById("searchInput").value.toLowerCase().trim();
+    document.getElementById("totalCount").textContent = records.length;
+
+    const filtered = records.filter(r => {
+      if (!q) return true;
+      return Object.values(r).some(v => String(v || "").toLowerCase().includes(q));
+    }).reverse();
+
+    const container = document.getElementById("listContainer");
+    if (!filtered.length) {
+      container.innerHTML = '<div class="status-msg">No matching records found. Tap + to add one.</div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(r => {
+      const fullName = `${r["First Name"] || ""} ${r["Last Name"] || ""}`.trim() || "Unnamed Customer";
+      return `
+        <div class="card">
+          <div class="card-head">
+            <div class="cust-name">${fullName}</div>
+          </div>
+          <div class="meta">
+            <strong>Model:</strong> ${r.Model || "—"} &nbsp;|&nbsp; <strong>Serial:</strong> ${r.Serial || "—"}<br/>
+            <strong>Date Delivered:</strong> ${r["Date Delivered"] || "—"} &nbsp;|&nbsp; <strong>Date Called:</strong> ${r["Date Called"] || "—"}
+          </div>
+          ${r.Notes ? `<div class="notes-box">${r.Notes}</div>` : ""}
+          <div class="card-actions">
+            <button class="btn-edit" onclick='openForm("${r.ID}")'>Edit</button>
+            <button class="btn-del" onclick='deleteRecord("${r.ID}")'>Delete</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function openForm(id = null) {
+    const rec = id ? records.find(r => r.ID === id) : null;
+    document.getElementById("modalTitle").textContent = rec ? "Edit Customer" : "New Customer";
+    document.getElementById("f-ID").value = rec ? rec.ID : "";
+    document.getElementById("f-FirstName").value = rec ? (rec["First Name"] || "") : "";
+    document.getElementById("f-LastName").value = rec ? (rec["Last Name"] || "") : "";
+    document.getElementById("f-Model").value = rec ? (rec.Model || "") : "";
+    document.getElementById("f-Serial").value = rec ? (rec.Serial || "") : "";
+    document.getElementById("f-DateDelivered").value = rec ? (rec["Date Delivered"] || "") : "";
+    document.getElementById("f-DateCalled").value = rec ? (rec["Date Called"] || "") : new Date().toISOString().slice(0, 10);
+    document.getElementById("f-Notes").value = rec ? (rec.Notes || "") : "";
+    document.getElementById("formModal").classList.add("open");
+  }
+
+  function closeForm() {
+    document.getElementById("formModal").classList.remove("open");
+  }
+
+  async function saveRecord() {
+    const id = document.getElementById("f-ID").value;
+    const item = {
+      ID: id || Math.random().toString(36).slice(2, 10),
+      "First Name": document.getElementById("f-FirstName").value.trim(),
+      "Last Name": document.getElementById("f-LastName").value.trim(),
+      Model: document.getElementById("f-Model").value.trim(),
+      Serial: document.getElementById("f-Serial").value.trim(),
+      "Date Delivered": document.getElementById("f-DateDelivered").value,
+      "Date Called": document.getElementById("f-DateCalled").value,
+      Notes: document.getElementById("f-Notes").value
+    };
+
+    const backup = JSON.parse(JSON.stringify(records));
+    if (id) {
+      const idx = records.findIndex(r => r.ID === id);
+      if (idx > -1) records[idx] = item;
+    } else {
+      records.push(item);
+    }
+
+    const btn = document.getElementById("saveBtn");
+    btn.textContent = "Saving...";
+    btn.disabled = true;
+
+    try {
+      await saveToGitHub(id ? `Update ${item.ID}` : `Add ${item.ID}`);
+      closeForm();
+      render();
+    } catch (err) {
+      records = backup;
+      alert("Save failed: " + err.message);
+    } finally {
+      btn.textContent = "Save";
+      btn.disabled = false;
+    }
+  }
+
+  async function deleteRecord(id) {
+    if (!confirm("Delete this customer record?")) return;
+    const backup = JSON.parse(JSON.stringify(records));
+    records = records.filter(r => r.ID !== id);
+
+    try {
+      await saveToGitHub(`Delete ${id}`);
+      render();
+    } catch (err) {
+      records = backup;
+      alert("Delete failed: " + err.message);
+    }
+  }
+
+  loadData();
+</script>
 </body>
 </html>

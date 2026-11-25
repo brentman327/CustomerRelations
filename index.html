@@ -1,266 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>ABC Relations Issue Log</title>
-  <style>
-    :root { --primary: #0f172a; --accent: #2563eb; --bg: #f1f5f9; --card: #ffffff; --border: #cbd5e1; --open: #dc2626; --resolved: #16a34a; }
-    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { margin: 0; background: var(--bg); color: #1e293b; padding-bottom: 80px; }
-    header { background: var(--primary); color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 10; }
-    header h1 { margin: 0 0 10px; font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
-    .search-bar { width: 100%; padding: 10px 12px; border-radius: 8px; border: none; font-size: 15px; }
-    .tabs { display: flex; background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 88px; z-index: 9; }
-    .tab { flex: 1; padding: 12px; text-align: center; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #64748b; }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .container { max-width: 720px; margin: 12px auto; padding: 0 12px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .cust-name { font-weight: 700; font-size: 16px; }
-    .badge { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 99px; color: #fff; }
-    .badge.Open { background: var(--open); }
-    .badge.Resolved { background: var(--resolved); }
-    .meta { font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4; }
-    .issue-box { background: #f8fafc; border-left: 3px solid var(--accent); padding: 8px 10px; font-size: 14px; margin: 8px 0; white-space: pre-wrap; }
-    .notes-box { background: #fefce8; border-left: 3px solid #eab308; padding: 8px 10px; font-size: 13px; margin: 8px 0; white-space: pre-wrap; }
-    .card-actions { display: flex; gap: 8px; margin-top: 10px; }
-    button { border: none; border-radius: 8px; padding: 9px 14px; font-weight: 600; font-size: 14px; cursor: pointer; }
-    .btn-edit { background: #e2e8f0; color: #0f172a; flex: 1; }
-    .btn-resolve { background: var(--resolved); color: #fff; flex: 1; }
-    .btn-reopen { background: #f59e0b; color: #fff; flex: 1; }
-    .fab { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #fff; width: 56px; height: 56px; border-radius: 50%; font-size: 28px; box-shadow: 0 4px 12px rgba(37,99,235,0.4); display: flex; align-items: center; justify-content: center; }
-    .modal { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 20; overflow-y: auto; padding: 16px; }
-    .modal.open { display: block; }
-    .modal-content { background: #fff; max-width: 540px; margin: 0 auto; border-radius: 12px; padding: 18px; }
-    .modal-content h2 { margin-top: 0; font-size: 18px; }
-    label { display: block; font-size: 12px; font-weight: 700; color: #475569; margin: 10px 0 4px; text-transform: uppercase; }
-    input, textarea, select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; }
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .modal-footer { display: flex; gap: 10px; margin-top: 16px; }
-    .btn-save { background: var(--accent); color: #fff; flex: 2; padding: 12px; }
-    .btn-cancel { background: #e2e8f0; color: #0f172a; flex: 1; padding: 12px; }
-    .status-msg { text-align: center; padding: 24px; color: #64748b; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Relations</title>
+    <!-- Link to your manifest file -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#003366">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .profile-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+        }
+        .profile-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box; /* Important for padding */
+        }
+        .saved-results {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+        }
+        .result-title {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .result-content {
+            font-size: 16px;
+            white-space: pre-wrap; /* Preserves line breaks */
+        }
+    </style>
 </head>
 <body>
 
 <header>
-  <h1>
-    <span>ABC Relations Issue Log</span>
-    <button onclick="loadData()" style="background:#334155;color:#fff;padding:5px 10px;font-size:12px;">Sync</button>
-  </h1>
-  <input type="search" id="searchInput" class="search-bar" placeholder="Search name, phone, model, serial, issue, notes..." oninput="render()" />
+    Customer Issue Log
 </header>
 
-<div class="tabs">
-  <div class="tab active" id="tab-Open" onclick="setTab('Open')">Open (<span id="count-Open">0</span>)</div>
-  <div class="tab" id="tab-Resolved" onclick="setTab('Resolved')">Resolved (<span id="count-Resolved">0</span>)</div>
-</div>
-
-<div class="container" id="listContainer">
-  <div class="status-msg">Loading issues...</div>
-</div>
-
-<button class="fab" onclick="openForm()">+</button>
-
-<div class="modal" id="formModal">
-  <div class="modal-content">
-    <h2 id="modalTitle">New Issue</h2>
-    <input type="hidden" id="f-ID" />
-    
-    <label>Customer Name *</label>
-    <input type="text" id="f-Name" required />
-    
-    <div class="row-2">
-      <div>
-        <label>Phone</label>
-        <input type="tel" id="f-Phone" />
-      </div>
-      <div>
-        <label>Date Called</label>
-        <input type="date" id="f-DateCalled" />
-      </div>
+<div class="content">
+    <!-- Profile Card -->
+    <div class="profile-card">
+        <img src="image_1.png" alt="ABC Relations Icon" class="profile-icon">
+        <span class="profile-name">Jane Doe</span>
     </div>
 
-    <label>Address</label>
-    <input type="text" id="f-Address" />
+    <!-- Search Input (Data is saved here) -->
+    <input type="text" id="searchInput" class="search-box" placeholder="Search by name... (data saves automatically)">
 
-    <div class="row-2">
-      <div>
-        <label>Model</label>
-        <input type="text" id="f-Model" />
-      </div>
-      <div>
-        <label>Serial</label>
-        <input type="text" id="f-Serial" />
-      </div>
+    <!-- Area to display the saved data -->
+    <div class="saved-results">
+        <div class="result-title">Log Entry for Jane Doe:</div>
+        <div id="savedContent" class="result-content"></div>
     </div>
-
-    <div class="row-2">
-      <div>
-        <label>Date Delivered</label>
-        <input type="date" id="f-DateDelivered" />
-      </div>
-      <div>
-        <label>Status</label>
-        <select id="f-Status">
-          <option value="Open">Open</option>
-          <option value="Resolved">Resolved</option>
-        </select>
-      </div>
-    </div>
-
-    <label>Issue Description</label>
-    <textarea id="f-Issue" rows="3"></textarea>
-
-    <label>Follow-Up Notes</label>
-    <textarea id="f-Notes" rows="3"></textarea>
-
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeForm()">Cancel</button>
-      <button class="btn-save" id="saveBtn" onclick="saveRecord()">Save Issue</button>
-    </div>
-  </div>
 </div>
 
 <script>
-  const API_URL = "YOUR_APPS_SCRIPT_URL_HERE";
-  let records = [];
-  let currentTab = "Open";
+    // 1. Find the elements we need
+    const searchInput = document.getElementById('searchInput');
+    const savedContent = document.getElementById('savedContent');
 
-  function fmtDate(val) {
-    if (!val) return "";
-    const d = new Date(val);
-    return isNaN(d) ? String(val) : d.toISOString().slice(0, 10);
-  }
+    // 2. Define a unique key for this specific data
+    const STORAGE_KEY = 'abc_relations_jane_doe_log';
 
-  async function loadData() {
-    document.getElementById("listContainer").innerHTML = '<div class="status-msg">Syncing with Google Sheets...</div>';
-    try {
-      const res = await fetch(API_URL);
-      records = await res.json();
-      render();
-    } catch (err) {
-      document.getElementById("listContainer").innerHTML = '<div class="status-msg">Error loading data. Check API URL & permissions.</div>';
-    }
-  }
-
-  function setTab(tab) {
-    currentTab = tab;
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    document.getElementById("tab-" + tab).classList.add("active");
-    render();
-  }
-
-  function render() {
-    const q = document.getElementById("searchInput").value.toLowerCase().trim();
-    const openCount = records.filter(r => (r.Status || "Open") === "Open").length;
-    const resCount = records.filter(r => r.Status === "Resolved").length;
-    document.getElementById("count-Open").textContent = openCount;
-    document.getElementById("count-Resolved").textContent = resCount;
-
-    const filtered = records.filter(r => {
-      const matchesTab = (r.Status || "Open") === currentTab;
-      if (!matchesTab) return false;
-      if (!q) return true;
-      return Object.values(r).some(v => String(v).toLowerCase().includes(q));
-    }).reverse();
-
-    const container = document.getElementById("listContainer");
-    if (!filtered.length) {
-      container.innerHTML = `<div class="status-msg">No ${currentTab.toLowerCase()} issues found.</div>`;
-      return;
-    }
-
-    container.innerHTML = filtered.map(r => `
-      <div class="card">
-        <div class="card-top">
-          <div class="cust-name">${r.Name || "Unnamed Customer"}</div>
-          <span class="badge ${r.Status || 'Open'}">${r.Status || 'Open'}</span>
-        </div>
-        <div class="meta">
-          ${r.Phone ? `📞 <a href="tel:${r.Phone}">${r.Phone}</a> &nbsp;|&nbsp; ` : ""}
-          📅 Called: ${fmtDate(r["Date Called"]) || "N/A"}<br/>
-          ${r.Address ? `📍 ${r.Address}<br/>` : ""}
-          🏷️ <strong>Model:</strong> ${r.Model || "—"} &nbsp;|&nbsp; <strong>Serial:</strong> ${r.Serial || "—"}
-          ${r["Date Delivered"] ? ` &nbsp;|&nbsp; <strong>Del:</strong> ${fmtDate(r["Date Delivered"])}` : ""}
-        </div>
-        ${r.Issue ? `<div class="issue-box"><strong>Issue:</strong> ${r.Issue}</div>` : ""}
-        ${r.Notes ? `<div class="notes-box"><strong>Notes:</strong> ${r.Notes}</div>` : ""}
-        <div class="card-actions">
-          <button class="btn-edit" onclick='openForm(${JSON.stringify(r).replace(/'/g, "&#39;")})'>Edit / Add Note</button>
-          ${(r.Status || "Open") === "Open"
-            ? `<button class="btn-resolve" onclick='quickStatus("${r.ID}", "Resolved")'>Mark Resolved</button>`
-            : `<button class="btn-reopen" onclick='quickStatus("${r.ID}", "Open")'>Reopen</button>`}
-        </div>
-      </div>
-    `).join("");
-  }
-
-  function openForm(rec = null) {
-    document.getElementById("modalTitle").textContent = rec ? "Edit Issue" : "New Customer Issue";
-    document.getElementById("f-ID").value = rec ? rec.ID : "";
-    document.getElementById("f-Name").value = rec ? rec.Name : "";
-    document.getElementById("f-Phone").value = rec ? rec.Phone : "";
-    document.getElementById("f-Address").value = rec ? rec.Address : "";
-    document.getElementById("f-Model").value = rec ? rec.Model : "";
-    document.getElementById("f-Serial").value = rec ? rec.Serial : "";
-    document.getElementById("f-DateDelivered").value = rec ? fmtDate(rec["Date Delivered"]) : "";
-    document.getElementById("f-DateCalled").value = rec ? fmtDate(rec["Date Called"]) : new Date().toISOString().slice(0, 10);
-    document.getElementById("f-Status").value = rec ? (rec.Status || "Open") : "Open";
-    document.getElementById("f-Issue").value = rec ? rec.Issue : "";
-    document.getElementById("f-Notes").value = rec ? rec.Notes : "";
-    document.getElementById("formModal").classList.add("open");
-  }
-
-  function closeForm() {
-    document.getElementById("formModal").classList.remove("open");
-  }
-
-  async function saveRecord() {
-    const id = document.getElementById("f-ID").value;
-    const payload = {
-      action: id ? "update" : "add",
-      ID: id,
-      Name: document.getElementById("f-Name").value,
-      Phone: document.getElementById("f-Phone").value,
-      Address: document.getElementById("f-Address").value,
-      Model: document.getElementById("f-Model").value,
-      Serial: document.getElementById("f-Serial").value,
-      "Date Delivered": document.getElementById("f-DateDelivered").value,
-      "Date Called": document.getElementById("f-DateCalled").value,
-      Issue: document.getElementById("f-Issue").value,
-      Status: document.getElementById("f-Status").value,
-      Notes: document.getElementById("f-Notes").value
-    };
-
-    const btn = document.getElementById("saveBtn");
-    btn.textContent = "Saving...";
-    btn.disabled = true;
-
-    await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify(payload)
+    // 3. LOAD DATA: When the app opens, check if data exists and put it on the screen
+    window.addEventListener('load', () => {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        if (savedData) {
+            searchInput.value = savedData; // Put text in input box
+            savedContent.textContent = savedData; // Display text below
+        }
     });
 
-    btn.textContent = "Save Issue";
-    btn.disabled = false;
-    closeForm();
-    loadData();
-  }
+    // 4. SAVE DATA: Every time the user types a letter, save the entire input instantly
+    searchInput.addEventListener('input', () => {
+        const dataToSave = searchInput.value;
+        localStorage.setItem(STORAGE_KEY, dataToSave); // Save to phone's memory
+        savedContent.textContent = dataToSave; // Update the display below immediately
+    });
 
-  async function quickStatus(id, newStatus) {
-    const rec = records.find(r => String(r.ID) === String(id));
-    if (!rec) return;
-    const payload = { ...rec, action: "update", Status: newStatus };
-    await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
-    loadData();
-  }
-
-  loadData();
+    // Register the Service Worker (Required for PWA installation)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then(registration => {
+                console.log('ServiceWorker registration successful');
+            }, err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
 </script>
+
 </body>
 </html>
